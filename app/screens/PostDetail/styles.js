@@ -18,7 +18,7 @@ export default StyleSheet.create({
     headerImageStyle: {
         height: 250,
         width: "100%",
-        top: 0,
+        top: 0, // supaya title headernya terlihat kasih 50
         alignSelf: "center",
         position: "absolute",
         // zIndex: 999,

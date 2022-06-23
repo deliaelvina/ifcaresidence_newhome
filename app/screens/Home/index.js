@@ -63,6 +63,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ModalSelector from 'react-native-modal-selector';
 
 import MasonryList from '@react-native-seoul/masonry-list';
+import { ActivityIndicator } from 'react-native-paper';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -189,6 +190,7 @@ const Home = props => {
 
   const [newsannounce, setNewsAnnounce] = useState([]);
   const [newsannounceslice, setNewsAnnounceSlice] = useState([]);
+  const [loadNewsAnnounce, setLoadNews] = useState(true)
 
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
@@ -291,6 +293,26 @@ const Home = props => {
       });
   };
 
+  const dataNewsAnnounce = async () => {
+    await axios
+      .get(`http://34.87.121.155:2121/apiwebpbi/api/news-announce`)
+      .then(res => {
+        console.log('RES newsss announce', res.data.data);
+        // console.log('data images', res.data[0].images);
+        const datanews = res.data.data;
+        const slicedatanews = datanews.slice(0, 6);
+        console.log('slice data', slicedatanews);
+        setNewsAnnounceSlice(slicedatanews);
+        setNewsAnnounce(datanews);
+        setLoadNews(false)
+        // return res.data;
+      })
+      .catch(error => {
+        console.log('error get dataNewsAnnounce', error);
+        // alert('error get');
+      });
+  };
+
   async function fetchDataDue() {
     try {
       const res = await axios.get(
@@ -330,24 +352,7 @@ const Home = props => {
     }
   }
 
-  const getNewsAnnounce = async () => {
-    // console.log('kok ini gada');
-    await axios
-      .get(`http://34.87.121.155:8000/ifcaprop-api/api/news-announce`)
-      .then(res => {
-        console.log('res news', res.data.data);
-        const datanews = res.data.data;
-        const slicedatanews = datanews.slice(0, 6);
-        console.log('slice data', slicedatanews);
-        setNewsAnnounceSlice(slicedatanews);
-        setNewsAnnounce(datanews);
-        // return res.data;
-      })
-      .catch(error => {
-        console.log('error get news announce home', error);
-        // alert('error get');
-      });
-  };
+ 
 
   const galery = [...data];
 
@@ -439,7 +444,7 @@ const Home = props => {
   useEffect(() => {
     console.log('galery', galery);
     dataImage();
-
+    dataNewsAnnounce();
     console.log('datauser', user);
     console.log('about', data);
     fetchDataDue();
@@ -452,7 +457,7 @@ const Home = props => {
   }, []);
 
   useEffect(() => {
-    getNewsAnnounce();
+    // getNewsAnnounce();
   }, []);
 
   const goPostDetail = item => () => {
@@ -753,11 +758,12 @@ const Home = props => {
               <Text>News and Announcement</Text>
             </View>
             <View style={{marginVertical: 15}}>
-              <SliderNews
+              {loadNewsAnnounce ? <ActivityIndicator/> : <SliderNews
                 data={newsannounceslice}
                 local={true}
                 // onPress={console.log('klik')}
-              />
+              />}
+              
             </View>
           </View>
 
