@@ -757,7 +757,7 @@ const Home = props => {
               </Text>
               <Text>News and Announcement</Text>
             </View>
-            <View style={{marginVertical: 15}}>
+            <View style={{marginVertical: 10, marginLeft:20 }}>
               {loadNewsAnnounce ? <ActivityIndicator/> : <SliderNews
                 data={newsannounceslice}
                 local={true}
@@ -782,7 +782,7 @@ const Home = props => {
             <View style={{marginVertical: 10, marginHorizontal: 10}}>
               <ScrollView horizontal>
                 <MasonryList
-                  data={eventdummy}
+                  data={sliceArrEvent}
                   style={{alignSelf: 'stretch'}}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
@@ -818,7 +818,7 @@ const Home = props => {
                   pagingEnabled={true}
                   decelerationRate="fast"
                   bounces={false}
-                  data={eventdummy}
+                  data={sliceArrEvent}
                   numColumns={3}
                   contentContainerStyle={{
                     paddingHorizontal: 10,
